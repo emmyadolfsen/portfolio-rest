@@ -29,7 +29,7 @@ class Courses extends Dbh {
         return true;
     }
 
-    // Får data från updateCourse och uppdaterar i databas
+    // Får data från updateContr och uppdaterar i databas
     protected function updateCourse($id, $coursecode, $coursename, $progression, $syllabus) {
         $sql = "UPDATE courses SET course_code = '$coursecode', course_name = '$coursename', progression = '$progression', syllabus = '$syllabus' WHERE id = $id";
         $stmt = $this->connect()->prepare($sql);
@@ -37,6 +37,7 @@ class Courses extends Dbh {
         return true;
     }
 
+    // Data från deleteContr - skickar med id för delete i databas
     protected function deleteCourse($id) {
         $sql = "DELETE FROM courses WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
