@@ -1,23 +1,24 @@
-
 <?php 
-include("includes/config.php");
+//include("includes/config.php");
+include("classes/dbh.class.php");
+include("classes/courses.class.php");
+include("classes/coursescontr.class.php");
+include("classes/coursesview.class.php");
 ?>
 
 <?php
-
 // Gör tjänsten tillgänglig från alla domäner
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, 
-Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 
 $method = $_SERVER['REQUEST_METHOD'];
 // Kolla om id finns med i adresssen
 if(isset($_GET['id'])) {
    $id = $_GET['id']; 
-}
+} 
 
 // Lägg till klasserna
 $courseObj = new CoursesView();
@@ -25,7 +26,7 @@ $courseObj = new CoursesContr();
 
 switch($method) {
     case 'GET':
-
+        
         $courseObj = new CoursesView();
         // Om id är skickat hämta rad från den kursen
         if(isset($id)) {
