@@ -3,17 +3,17 @@
 class CoursesContr extends Courses {
 
     // funktion för att lägga till ny kurs
-    public function createCourse($coursecode, $coursename, $progression, $syllabus) {
+    public function createCourse($university, $course_name, $course_date) {
         // Flyttar data eftersom setCourse är protected för säkerhet
         // Annras hade man kunnat gå raka vägen 
-        $this->setCourse($coursecode, $coursename, $progression, $syllabus);
+        $this->setCourse($university, $course_name, $course_date);
         return true;
     }
     
     // Funktion för att uppdatera kurs
-    public function updateContr($id, $coursecode, $coursename, $progression, $syllabus) {
+    public function updateContr($id, $university, $course_name, $course_date) {
         // Flyttar data
-        $this->updateCourse($id, $coursecode, $coursename, $progression, $syllabus);
+        $this->updateCourse($id, $university, $course_name, $course_date);
         return true;
     }
 

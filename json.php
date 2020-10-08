@@ -21,7 +21,7 @@ if(isset($_GET['id'])) {
 } 
 
 // Lägg till klasserna
-$courseObj = new CoursesView();
+//$courseObj = new CoursesView();
 $courseObj = new CoursesContr();
 
 switch($method) {
@@ -52,13 +52,12 @@ switch($method) {
         $data = json_decode(file_get_contents("php://input"));
   
         // Spara data i variabler
-        $coursecode = $data->course_code;
-        $coursename = $data->course_name;
-        $progression = $data->progression;
-        $syllabus = $data->syllabus;
+        $university = $data->university;
+        $course_name = $data->course_name;
+        $course_date = $data->course_date;
         
         // Skicka iväg data till createCourse
-        if($courseObj->createCourse($coursecode, $coursename, $progression, $syllabus)) {
+        if($courseObj->createCourse($university, $course_name, $course_date)) {
             http_response_code(201); // Skapad
             $result = array("message" => "Kurs skapad");
         } else {
@@ -79,13 +78,12 @@ switch($method) {
         $data = json_decode(file_get_contents("php://input"));
         
          // Spara i variabler
-         $coursecode = $data->course_code;
-         $coursename = $data->course_name;
-         $progression = $data->progression;
-         $syllabus = $data->syllabus;
-    
+         $university = $data->university;
+         $course_name = $data->course_name;
+         $course_date = $data->course_date;
+         
         // Skicka vidare data till updateContr
-        if($courseObj->updateContr($id, $coursecode, $coursename, $progression, $syllabus)) {
+        if($courseObj->updateContr($id, $university, $course_name, $course_date)) {
             http_response_code(200); // uppdaterad
             $result = array("message" => "Kurs skapad");
         } else {

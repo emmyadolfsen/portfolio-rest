@@ -5,7 +5,7 @@ class Courses extends Dbh {
 
     // Hämtar specifik data från databas med specifikt id 
     protected function getCourse($id) {
-        $sql = "SELECT * FROM courses WHERE id = ?";
+        $sql = "SELECT * FROM courses_read WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$id]);
         $result = $stmt->fetchAll();
@@ -14,7 +14,7 @@ class Courses extends Dbh {
 
     // Hämta all data från courses i databasen
     public function getCourses() {
-        $sql = "SELECT * FROM courses";
+        $sql = "SELECT * FROM courses_read";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll();
@@ -22,24 +22,24 @@ class Courses extends Dbh {
     }
 
     // Får data från createCourse och lägger till i databas
-    protected function setCourse($coursecode, $coursename, $progression, $syllabus) {
-        $sql = "INSERT INTO courses(course_code, course_name, progression, syllabus) VALUES (?, ?, ?, ?)";
+    protected function setCourse($university, $course_name, $course_date) {
+        $sql = "INSERT INTO courses_read(university, course_name, course_date) VALUES (?, ?, ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$coursecode, $coursename, $progression, $syllabus]);
+        $stmt->execute([$university, $course_name, $course_date]);
         return true;
     }
 
     // Får data från updateContr och uppdaterar i databas
-    protected function updateCourse($id, $coursecode, $coursename, $progression, $syllabus) {
-        $sql = "UPDATE courses SET course_code = '$coursecode', course_name = '$coursename', progression = '$progression', syllabus = '$syllabus' WHERE id = $id";
+    protected function updateCourse($id, $university, $course_name, $course_date) {
+        $sql = "UPDATE courses_read SET university = '$university', course_name = '$course_name', course_date = '$course_date' WHERE id = $id";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$id, $coursecode, $coursename, $progression, $syllabus]);
+        $stmt->execute([$id, $university, $course_name, $course_date]);
         return true;
     }
 
     // Data från deleteContr - skickar med id för delete i databas
     protected function deleteCourse($id) {
-        $sql = "DELETE FROM courses WHERE id = ?";
+        $sql = "DELETE FROM courses_read WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$id]);
         return true;
