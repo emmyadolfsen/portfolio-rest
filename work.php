@@ -1,14 +1,12 @@
 <?php 
-include("includes/config.php");
-/*
-include("classes/dbh.class.php");
-include("classes/work.class.php");
-include("classes/workcontr.class.php");
-include("classes/workview.class.php");
-*/
-?>
+//include("includes/config.php");
 
-<?php
+include("classes/dbh.class.php");
+include("classes/work/work.class.php");
+include("classes/work/workcontr.class.php");
+include("classes/work/workview.class.php");
+
+
 // Gör tjänsten tillgänglig från alla domäner
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -28,7 +26,7 @@ $courseObj = new WorkContr();
 
 switch($method) {
     case 'GET':
-        $table = 'work';
+
         $courseObj = new WorkView();
         // Om id är skickat hämta rad från den kursen
         if(isset($id)) {

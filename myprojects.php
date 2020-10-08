@@ -1,9 +1,11 @@
 <?php 
 //include("includes/config.php");
+
 include("classes/dbh.class.php");
-include("classes/courses.class.php");
-include("classes/coursescontr.class.php");
-include("classes/coursesview.class.php");
+include("classes/projects/projects.class.php");
+include("classes/projects/projectscontr.class.php");
+include("classes/projects/projectsview.class.php");
+
 ?>
 
 <?php
@@ -21,19 +23,19 @@ if(isset($_GET['id'])) {
 } 
 
 // Lägg till klasserna
-//$courseObj = new CoursesView();
-$courseObj = new CoursesContr();
+
+$courseObj = new ProjectsContr();
 
 switch($method) {
     case 'GET':
-        
-        $courseObj = new CoursesView();
+
+        $courseObj = new ProjectsView();
         // Om id är skickat hämta rad från den kursen
         if(isset($id)) {
-            $courseObj->showCourse($id);
+            $courseObj->showProject($id);
         } else {
             // Om id inte är skickat - hämta alla data
-            $courseObj->showCourses();
+            $courseObj->showProjects();
         }
 
         // Om resultatet är större än 0
@@ -52,12 +54,12 @@ switch($method) {
         $data = json_decode(file_get_contents("php://input"));
   
         // Spara data i variabler
-        $university = $data->university;
-        $course_name = $data->course_name;
-        $course_date = $data->course_date;
+        $project_name = $data->project_name;
+        $project_url = $data->project_url;
+        $project_d = $data->project_d;
         
         // Skicka iväg data till createCourse
-        if($courseObj->createCourse($university, $course_name, $course_date)) {
+        if($courseObj->createProject($project_name, $project_url, $project_d)) {
             http_response_code(201); // Skapad
             $result = array("message" => "Kurs skapad");
         } else {
@@ -78,12 +80,13 @@ switch($method) {
         $data = json_decode(file_get_contents("php://input"));
         
          // Spara i variabler
-         $university = $data->university;
-         $course_name = $data->course_name;
-         $course_date = $data->course_date;
-         
+         $project_name = $data->project_name;
+         $project_url = $data->project_url;
+         $project_d = $data->project_d;
+
+
         // Skicka vidare data till updateContr
-        if($courseObj->updateContr($id, $university, $course_name, $course_date)) {
+        if($courseObj->updateProjectContr($id, $project_name, $project_url, $project_d)) {
             http_response_code(200); // uppdaterad
             $result = array("message" => "Kurs skapad");
         } else {
@@ -102,7 +105,7 @@ switch($method) {
                 $result = array("message" => "Inget id skickat");
             } else {
             // Om id är skickat skicka vidare det till deleteContr
-            if($courseObj->deleteContr($id)) {
+            if($courseObj->deleteProjectContr($id)) {
                 http_response_code(200); // uppdaterad
                 $result = array("message" => "Kurs raderad");
             } else {
