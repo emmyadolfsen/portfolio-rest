@@ -1,26 +1,31 @@
 <?php
 
-class WorkContr extends Work {
+class WorkContr extends Portfolio {
 
-    // funktion för att lägga till ny kurs
+    // Funktion för att lägga till nytt jobb
     public function createWork($work_name, $work_place, $work_title, $work_date) {
-        // Flyttar data eftersom setCourse är protected för säkerhet
-        // Annras hade man kunnat gå raka vägen 
-        $this->setWork($work_name, $work_place, $work_title, $work_date);
-        return true;
+        
+        $post = '$work_name, $work_place, $work_title, $work_date';
+        $sql_insert = "work(work_name, work_place, work_title, work_date) VALUES ('$work_name', '$work_place', '$work_title', '$work_date')";
+        $this->setObject($sql_insert, $post);   // Skickar med resten av SQL-frågan 'INSERT INTO..' ($sql_insert)
+        return true;                            // Skickar med parametrarna som ska hämtas från databastabellen ($post) 
     }
-    
-    // Funktion för att uppdatera kurs
+
+    // Funktion för att uppdatera jobb
     public function updateWorkContr($id, $work_name, $work_place, $work_title, $work_date) {
         // Flyttar data
-        $this->updateWork($id, $work_name, $work_place, $work_title, $work_date);
-        return true;
+        $sql_set = "work_name = '$work_name', work_place = '$work_place', work_title = '$work_title', work_date = '$work_date' WHERE id = $id";
+        $table_name = 'work';
+        $post = '$id, $work_name, $work_place, $work_title, $work_date';
+        $this->updateObject($table_name, $sql_set, $post);  // Skickar med tabellnamn($table_name), resten av SQL-frågan: 'UPDATE $table_name SET..' ($sql_set)
+        return true;                                        // samt parametrar som ska hämtas från databasen ($post)  
     }
 
-    // Funktion för att radera kurs
+    // Funktion för att radera jobb
     public function deleteWorkContr($id) {
-        // Flyttar data
-        $this->deleteWork($id);
+
+        $table_name = 'work';
+        $this->deleteObject($id, $table_name);      // Skickar med id och tabellnamn($table_name)
         return true;
     }
 }

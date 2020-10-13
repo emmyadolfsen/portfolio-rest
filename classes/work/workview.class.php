@@ -1,23 +1,22 @@
 <?php
 
-class WorkView extends Work {
-    // Hämta data från getCourse - skicka till showCourse
-    public function showWork($id) {
-        $result = $this->getWork($id);
-        // Gör om till json och skriv ut med pretty print
-        header('Content-Type: application/json');
-        echo json_encode($result, JSON_PRETTY_PRINT);
-
+class WorkView extends Portfolio {
+    
+    public function showWork($id) {                     // Skicka med id och tabellnamn för att hämta ut 
+        $table_name = 'work';                           // jobb från tabellen work med specifikt id
+        $result = $this->getObject($id, $table_name);
+        
+        header('Content-Type: application/json');       
+        echo json_encode($result, JSON_PRETTY_PRINT);   // Gör om till json och skriv ut med pretty print
     }
 
     public function showAllWork() {
-        // Hämta data från getCourses
-        $result = $this->getAllWork();
-
-            // Gör om till json med ett pretty print
-            header('Content-Type: application/json');
-            echo json_encode($result, JSON_PRETTY_PRINT);
         
+        $table_name = 'work';                           // Skicka med tabellnamn och
+        $result = $this->getObjects($table_name);       // hämta allt från tabellen work
+
+            header('Content-Type: application/json');   
+            echo json_encode($result, JSON_PRETTY_PRINT);   // Gör om till json och skriv ut med pretty print
     }
 
 }

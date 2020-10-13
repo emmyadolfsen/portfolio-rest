@@ -1,22 +1,24 @@
 <?php
 
-class ProjectsView extends Projects {
-    // Hämta data från getCourse - skicka till showCourse
-    public function showProject($id) {
-        $result = $this->getProject($id);
-        // Gör om till json och skriv ut med pretty print
-        header('Content-Type: application/json');
-        echo json_encode($result, JSON_PRETTY_PRINT);
+class ProjectsView extends Portfolio {
+
+    public function showProject($id) {                  
+
+        $table_name = 'myprojects';                     // Skicka med id och tabellnamn för att hämta ut
+        $result = $this->getObject($id, $table_name);   // projekt från tabellen myprojects med specifikt id
+        
+        header('Content-Type: application/json');       
+        echo json_encode($result, JSON_PRETTY_PRINT);       // Gör om till json och skriv ut med pretty print
 
     }
 
     public function showProjects() {
-        // Hämta data från getCourses
-        $result = $this->getProjects();
 
-            // Gör om till json med ett pretty print
-            header('Content-Type: application/json');
-            echo json_encode($result, JSON_PRETTY_PRINT);
+        $table_name = 'myprojects';                     // Skicka med tabellnamn och
+        $result = $this->getObjects($table_name);       // hämta allt från tabellen myprojects
+            
+            header('Content-Type: application/json');   
+            echo json_encode($result, JSON_PRETTY_PRINT);   // Gör om till json och skriv ut med pretty print
         
     }
 
