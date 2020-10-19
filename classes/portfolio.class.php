@@ -40,7 +40,7 @@ class Portfolio extends Dbh {
     protected function deleteObject($id, $table_name) {
         $sql = "DELETE FROM $table_name WHERE id = '$id'";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$id]);
+        $stmt->execute();
         return true;
     }
 
