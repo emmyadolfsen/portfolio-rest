@@ -2,6 +2,7 @@
 // Inkludera
 include("includes/config.php");
 
+
 $method = $_SERVER['REQUEST_METHOD'];   // Kolla vilken metod som används
 
 if(isset($_GET['id'])) {                // Kolla om id finns med i adresssen
@@ -10,7 +11,7 @@ if(isset($_GET['id'])) {                // Kolla om id finns med i adresssen
 
 $control = new Control();        // Instansiera kontrollklassen
 
-$table_name = 'work';
+$table_name = 'courses_read';
 
 switch($method) {
     case 'GET':
@@ -35,13 +36,13 @@ switch($method) {
         // Variabler för databasanrop
         $data = json_decode(file_get_contents("php://input"));  // Hämta data från input
         // Spara i variabler
-        $obj1 = $data->work_name;
-        $obj2 = $data->work_place;
-        $obj3 = $data->work_title;
-        $obj4 = $data->work_date;
+        $obj1 = $data->university;
+        $obj2 = $data->course_name;
+        $obj3 = $data->course_date;
+        $obj4 = $data->syllabus;
 
         // Lägg kolumnnamn i variabel
-        $column = 'work_name, work_place, work_title, work_date';
+        $column = 'university, course_name, course_date, syllabus';
         
         // Skicka iväg data för att skapa objekt
         if($control->createObject($table_name, $column, $obj1, $obj2, $obj3, $obj4)) {
@@ -55,22 +56,22 @@ switch($method) {
 
     case 'PUT':
 
-        if(!isset($id)) {                                       // Om inget id är skickat:
+        if(!isset($id)) {                                           // Om inget id är skickat:
             http_response_code(510);
             $result = array("message" => "Inget id skickat");
-        } else {                                                // Om id är skickat:
-        $data = json_decode(file_get_contents("php://input"));  // Hämta data från input
-         // Spara i variabler
-         $obj1 = $data->work_name;
-         $obj2 = $data->work_place;
-         $obj3 = $data->work_title;
-         $obj4 = $data->work_date;
+        } else {                                                    // Om id är skickat:
+        $data = json_decode(file_get_contents("php://input"));      // Hämta data från input
+        // Spara i variabler
+        $obj1 = $data->university;
+        $obj2 = $data->course_name;
+        $obj3 = $data->course_date;
+        $obj4 = $data->syllabus;
 
         // Lägg kolumnnamn i variabeler
-        $col1 = 'work_name';
-        $col2 = 'work_place';
-        $col3 = 'work_title';
-        $col4 = 'work_date';
+        $col1 = 'university';
+        $col2 = 'course_name';
+        $col3 = 'course_date';
+        $col4 = 'syllabus';
 
         // Skicka vidare data för uppdatering av objekt
         if($control->updateContr($table_name, $id, $col1, $col2, $col3, $col4, $obj1, $obj2, $obj3, $obj4)) {
@@ -82,20 +83,20 @@ switch($method) {
         }
         break;
 
-        case 'DELETE' :
+    case 'DELETE' :
 
-            if(!isset($id)) {                       // Om inget id är medskickat
-                http_response_code(510);
-            } else {                                // Om id är skickat, skicka vidare för radering av objekt
-            if(isset($id)) {
-                $control->deleteContr($id, $table_name); // Skicka med id och tabellnamn
-                http_response_code(200); // uppdaterad
-            } else {
-                http_response_code(503); // Server error
-            }
-        
-            }
-        break;
+        if(!isset($id)) {                       // Om inget id är medskickat
+            http_response_code(510);
+        } else {                                // Om id är skickat, skicka vidare för radering av objekt
+        if(isset($id)) {
+            $control->deleteContr($id, $table_name); // Skicka med id och tabellnamn
+            http_response_code(200); // uppdaterad
+        } else {
+            http_response_code(503); // Server error
+        }
+    
+        }
+    break;
 }
 
 ?>

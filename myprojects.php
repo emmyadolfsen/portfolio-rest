@@ -1,9 +1,6 @@
 <?php 
 // Inkludera
 include("includes/config.php");
-include("classes/projects/projectscontr.class.php");
-include("classes/projects/projectsview.class.php");
-
 
 $method = $_SERVER['REQUEST_METHOD'];   // Kolla vilken metod som används
 
@@ -11,89 +8,92 @@ if(isset($_GET['id'])) {                // Kolla om id finns med i adresssen
    $id = $_GET['id']; 
 } 
 
-$courseObj = new ProjectsContr();       // Instansiera kontrollklass
+$control = new Control();        // Instansiera kontrollklassen
+
+$table_name = 'myprojects';
 
 switch($method) {
     case 'GET':
 
-        $courseObj = new ProjectsView();        // Instansiera klassen
+        $view = new View();              // Instansiera viewklassen 
 
-        if(isset($id)) {                        // Om id är medskickat, hämta specifikt objekt
-            $courseObj->showProject($id);
-        } else {                                // Om id inte är skickat - hämta alla data
-            $courseObj->showProjects();
+        if(isset($id)) {
+            $view->showObject($id, $table_name);        // Om id är medskickat, hämta specifikt objekt
+        } else {                                        // Om id inte är skickat - hämta alla data
+            $view->showObjects($table_name);
         }
-        
-        if(sizeof($courseObj) > 0) {            // Om resultatet är större än 0 status OK
+
+        if(sizeof($view) > 0) {            // Om resultatet är större än 0 status OK
             http_response_code(200);
         } else {
-            http_response_code(404);            
-            $courseObj = array("message" => "Inga kurser hittades");
+            http_response_code(404);
         }
        
     break;
 
     case 'POST':
-
+        // Variabler för databasanrop
         $data = json_decode(file_get_contents("php://input"));  // Hämta data från input
-  
-        // Spara data i variabler
-        $project_name = $data->project_name;
-        $project_url = $data->project_url;
-        $project_d = $data->project_d;
-        $project_img = $data->project_img;
+        // Spara i variabler
+        $obj1 = $data->project_name;
+        $obj2 = $data->project_url;
+        $obj3 = $data->project_d;
+        $obj4 = $data->project_img;
+
+        // Lägg kolumnnamn i variabel
+        $column = 'project_name, project_url, project_d, project_img';
         
-        // Hämta data från input
-        if($courseObj->createProject($project_name, $project_url, $project_d, $project_img)) {
+        // Skicka iväg data för att skapa objekt
+        if($control->createObject($table_name, $column, $obj1, $obj2, $obj3, $obj4)) {
             http_response_code(201); // Skapad
-            $result = array("message" => "Projekt skapat");
+            $result = array("message" => "Kurs skapad");
         } else {
             http_response_code(503); // Server error
-            $result = array("message" => "Något gick fel - Projekt ej skapat");
         }
     
     break;
 
     case 'PUT':
-         
-        if(!isset($id)) {                                       // Om inget id är skickat:
+
+        if(!isset($id)) {                                           // Om inget id är skickat:
             http_response_code(510);
             $result = array("message" => "Inget id skickat");
-        } else {                                                // Om id är skickat:
-        $data = json_decode(file_get_contents("php://input"));  // Hämta data från input
-        
-         // Spara i variabler
-         $project_name = $data->project_name;
-         $project_url = $data->project_url;
-         $project_d = $data->project_d;
-         $project_img = $data->project_img;
+        } else {                                                    // Om id är skickat:
+        $data = json_decode(file_get_contents("php://input"));      // Hämta data från input
+        // Spara i variabler
+        $obj1 = $data->project_name;
+        $obj2 = $data->project_url;
+        $obj3 = $data->project_d;
+        $obj4 = $data->project_img;
+
+        // Lägg kolumnnamn i variabeler
+        $col1 = 'project_name';
+        $col2 = 'project_url';
+        $col3 = 'project_d';
+        $col4 = 'project_img';
 
         // Skicka vidare data för uppdatering av objekt
-        if($courseObj->updateProjectContr($id, $project_name, $project_url, $project_d, $project_img)) {
+        if($control->updateContr($table_name, $id, $col1, $col2, $col3, $col4, $obj1, $obj2, $obj3, $obj4)) {
             http_response_code(200); // uppdaterad
-            $result = array("message" => "Kurs skapad");
         } else {
             http_response_code(503); // Server error
-            $result = array("message" => "Något gick fel - Kursen ej skapad");
         }
+    
         }
         break;
 
         case 'DELETE' :
 
-            
             if(!isset($id)) {                       // Om inget id är medskickat
                 http_response_code(510);
-                $result = array("message" => "Inget id skickat");
             } else {                                // Om id är skickat, skicka vidare för radering av objekt
-            if($courseObj->deleteProjectContr($id)) {
+            if(isset($id)) {
+                $control->deleteContr($id, $table_name); // Skicka med id och tabellnamn
                 http_response_code(200); // uppdaterad
-                $result = array("message" => "Kurs raderad");
             } else {
                 http_response_code(503); // Server error
-                $result = array("message" => "Något gick fel - Kursen ej raderad");
             }
-    
+        
             }
         break;
 }

@@ -21,18 +21,18 @@ class Portfolio extends Dbh {
     }
 
     // Lägg till nytt objekt i databastabell
-    protected function setObject($sql_insert, $post) {
+    protected function setObject($sql_insert) {
         $sql = "INSERT INTO $sql_insert";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$post]);
+        $stmt->execute();
         return true;
     }
 
     // Uppdatera objekt i databastabell
-    protected function updateObject($table_name, $sql_set, $post) {
+    protected function updateObject($table_name, $sql_set) {
         $sql = "UPDATE $table_name SET $sql_set";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$posts]);
+        $stmt->execute();
         return true;
     }
 
