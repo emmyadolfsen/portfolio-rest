@@ -6,7 +6,7 @@ class Portfolio extends Dbh {
     protected function getObject($id, $table_name) {
         $sql = "SELECT * FROM $table_name WHERE id = $id";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$id]);
+        $stmt->execute();
         $result = $stmt->fetchAll();
         return $result;
     }
