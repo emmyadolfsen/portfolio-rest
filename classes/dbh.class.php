@@ -13,6 +13,7 @@ class Dbh {
     private $pwd = '1416Bonis';
     private $dbName = 'aspelles_portfolio';
 */
+
     // Databasanslutning
     protected function connect() {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbName;
