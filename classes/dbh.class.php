@@ -10,7 +10,7 @@ class Dbh {
 /*
     private $host = 'localhost';
     private $user = 'aspelles_portfolio';
-    private $pwd = '1416Bonis';
+    private $pwd = '******';
     private $dbName = 'aspelles_portfolio';
 */
 
