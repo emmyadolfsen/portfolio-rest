@@ -1,18 +1,18 @@
 <?php
 
 class Dbh {
-    
+    /*
     private $host = 'localhost';
     private $user = 'rest';
     private $pwd = 'password';
     private $dbName = 'rest';
-   
-/*
+    */
+
     private $host = 'localhost';
     private $user = 'aspelles_portfolio';
     private $pwd = '******';
     private $dbName = 'aspelles_portfolio';
-*/
+    
 
     // Databasanslutning
     protected function connect() {
